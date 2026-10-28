@@ -28,11 +28,11 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "nim": "240101088",
-  "nama": "Rizky Ramadhan",
-  "program_studi": "Teknik Informatika",
+  "npm": "240101089",
+  "nama": "Budi Santoso",
+  "program_studi": "Teknik Elektro",
   "angkatan": 2024,
-  "email": "rizky.ramadhan@example.com"
+  "email": "budi.s@example.com"
 }
 
 ###
@@ -43,7 +43,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "nim": "230101001",
+  "npm": "230101001",
   "nama": "Ahmad Fauzi, S.Kom.",
   "program_studi": "Teknik Informatika",
   "angkatan": 2023,
@@ -55,4 +55,3 @@ Accept: application/json
 ### 6. DELETE Hapus Data Mahasiswa Berdasarkan ID
 DELETE http://localhost:8000/api/mahasiswa.php?id=4
 Accept: application/json
-

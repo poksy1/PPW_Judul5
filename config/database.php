@@ -1,38 +1,38 @@
 <?php
-/**
- * Praktikum 5: Implementasi Manajemen Data dan REST API Menggunakan PHP dan MySQL
- * File: config/database.php
- * Konfigurasi koneksi basis data menggunakan PDO (PHP Data Objects).
- */
+// config/database.php
 
 class Database {
-    private string $host = '127.0.0.1';
-    private string $db_name = 'db_mahasiswa';
-    private string $username = 'root';
-    private string $password = '';
-    private int $port = 3306;
-    private ?PDO $conn = null;
+    private $host = "127.0.0.1";
+    private $port = "3306";
+    private $dbname = "db_mahasiswa";
+    private $username = "root";
+    private $password = ""; // Kosongkan jika pakai Laragon default
+    private $pdo;
 
-    /**
-     * Membuka dan mengembalikan koneksi PDO ke MySQL
-     *
-     * @return PDO
-     * @throws PDOException
-     */
-    public function getConnection(): PDO {
-        if ($this->conn === null) {
-            $dsn = "mysql:host={$this->host};port={$this->port};dbname={$this->db_name};charset=utf8mb4";
-            $options = [
-                PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
-                PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
-                PDO::ATTR_EMULATE_PREPARES   => false,
-            ];
-
-           // Percobaan 5-1 Langkah 4
-           
+    // Hapus batasan ": PDO" agar tidak crash saat koneksi gagal
+    public function getConnection() {
+        $this->pdo = null;
+        $dsn = "mysql:host=" . $this->host . ";port=" . $this->port . ";dbname=" . $this->dbname . ";charset=utf8mb4";
+        
+        $options = [
+            PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+            PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+            PDO::ATTR_EMULATE_PREPARES   => false,
+        ];
+        
+        try {
+            $this->pdo = new PDO($dsn, $this->username, $this->password, $options);
+        } catch(PDOException $exception) {
+            // Ini akan memunculkan ALASAN ASLI kenapa database menolak koneksi
+            http_response_code(500);
+            echo json_encode([
+                "status" => "error", 
+                "message" => "Koneksi Database Gagal: " . $exception->getMessage()
+            ]);
+            exit;
         }
-
-        return $this->conn;
+        
+        return $this->pdo;
     }
 }
-
+?>
